@@ -3,7 +3,7 @@ import React, { Component } from "react"
 class EmployeeList extends Component {
     render() {
         return (
-            <div>
+            <div className="content">
                 <h3>Employees</h3>
                 {
                     this.props.employees.map(employee => 
