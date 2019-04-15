@@ -7,9 +7,14 @@ class CandyList extends Component {
                 <h3>Candy</h3>
                 {
                     this.props.candies.map(candy =>
-                        <div key={candy.id}>
+                        <div key={candy.id }>
                             {candy.name}
-                        </div>                    )
+                            { } of type { }
+                            {
+                              this.props.candyTypes.find(candyType => candy.candyTypeId === candyType.id).name
+                            }
+                        </div>
+                        )
                 }
             </div>
         )
