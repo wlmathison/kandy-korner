@@ -30,7 +30,7 @@ class ApplicationViews extends Component {
         {id: 1, name: "Snickers", candyTypeId: 1},
         {id: 2, name: "Jelly Belly", candyTypeId: 2},
         {id: 3, name: "Sweet Tarts", candyTypeId: 5},
-        {id: 4, name: "Airheads", candyTypeId: 41},
+        {id: 4, name: "Airheads", candyTypeId: 4},
         {id: 5, name: "Nerds", candyTypeId: 3}
     ]
 
@@ -51,7 +51,7 @@ class ApplicationViews extends Component {
                     return <EmployeeList employees={this.state.employees} />
                 }} />
                 <Route path="/candy" render={(props) => {
-                    return <CandyList candies={this.state.candies} />
+                    return <CandyList candies={this.state.candies} candyTypes={this.state.candyTypes} />
                 }} />                       
             </React.Fragment>             
         )
