@@ -3,6 +3,10 @@ import { Route } from "react-router-dom"
 import StoreList from "./StoreList"
 import EmployeeList from "./EmployeeList"
 import CandyList from "./CandyList"
+import StoresManager from "../modules/StoresManager"
+import EmployeesManager from "../modules/EmployeesManager"
+import CandyTypesManager from "../modules/CandyTypesManager"
+import CandiesManager from "../modules/CandiesManager";
 
 class ApplicationViews extends Component {
 
@@ -16,28 +20,19 @@ class ApplicationViews extends Component {
     componentDidMount() {
         const newState = {}
 
-        fetch("http://localhost:5002/stores")
-            .then(results => results.json())
+        StoresManager.getAll()
             .then(stores => newState.stores = stores)
-            .then(() => fetch("http://localhost:5002/employees"))
-            .then(results => results.json())
+            .then(EmployeesManager.getAll)
             .then(employees => newState.employees = employees)
-            .then(() => fetch("http://localhost:5002/candies"))
-            .then(results => results.json())
+            .then(CandiesManager.getAll)
             .then(candies => newState.candies = candies)
-            .then(() => fetch("http://localhost:5002/candyTypes"))
-            .then(results => results.json())
+            .then(CandyTypesManager.getAll)
             .then(candyTypes => newState.candyTypes = candyTypes)
             .then(() => this.setState(newState))
     }
 
     deleteCandy = id => {
-        return fetch(`http://localhost:5002/candies/${id}`, {
-            method: "DELETE"
-        })
-        .then(results => results.json())
-        .then(() => fetch("http://localhost:5002/candies"))
-        .then(results => results.json())
+        CandiesManager.removeAndList(id)
         .then(candies => this.setState({
             candies:candies
         }))
