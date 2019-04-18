@@ -1,12 +1,14 @@
 import React, { Component } from "react"
 import { Route } from "react-router-dom"
-import StoreList from "./StoreList"
+import { withRouter } from "react-router"
+import StoreList from "./stores/StoreList"
 import EmployeeList from "./EmployeeList"
-import CandyList from "./CandyList"
+import CandyList from "./candy/CandyList"
 import StoresManager from "../modules/StoresManager"
 import EmployeesManager from "../modules/EmployeesManager"
 import CandyTypesManager from "../modules/CandyTypesManager"
-import CandiesManager from "../modules/CandiesManager";
+import CandiesManager from "../modules/CandiesManager"
+import StoreDetail from "./stores/StoreDetail"
 
 class ApplicationViews extends Component {
 
@@ -33,9 +35,9 @@ class ApplicationViews extends Component {
 
     deleteCandy = id => {
         CandiesManager.removeAndList(id)
-        .then(candies => this.setState({
-            candies:candies
-        }))
+            .then(candies => this.setState({
+                candies: candies
+            }))
     }
 
     render() {
@@ -44,15 +46,23 @@ class ApplicationViews extends Component {
                 <Route exact path="/" render={(props) => {
                     return <StoreList stores={this.state.stores} />
                 }} />
-                <Route path="/employees" render={(props) => {
+                <Route exact path="/employees" render={(props) => {
                     return <EmployeeList employees={this.state.employees} />
                 }} />
-                <Route path="/candy" render={(props) => {
+                <Route exact path="/candy" render={(props) => {
                     return <CandyList deleteCandy={this.deleteCandy} candies={this.state.candies} candyTypes={this.state.candyTypes} />
-                }} />                       
-            </React.Fragment>             
+                }} />
+                <Route path="/stores/:storeId(\d+)" render={(props) => {
+                    let store = this.state.stores.find(store =>
+                        store.id === parseInt(props.match.params.storeId))
+                    if (!store) {
+                        store = { id: 404, name: "Store not found" }
+                    }
+                    return <StoreDetail store={store} />
+                }} />
+            </React.Fragment>
         )
     }
 }
 
-export default ApplicationViews
+export default withRouter(ApplicationViews)
