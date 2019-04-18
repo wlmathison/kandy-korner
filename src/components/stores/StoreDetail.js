@@ -19,6 +19,14 @@ export default class Store extends Component {
                         <h5 className="card-title">
                             {this.props.store.phoneNumber}
                         </h5>
+                        <button onClick={
+                            () => this.setState(
+                                { saveDisabled: true },
+                                () => this.props.delete()
+                            )
+                        }
+                            disabled={this.state.saveDisabled}
+                            className="card-link">Delete</button>
                     </div>
                 </div>
             </section>

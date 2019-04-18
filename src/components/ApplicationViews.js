@@ -33,11 +33,19 @@ class ApplicationViews extends Component {
             .then(() => this.setState(newState))
     }
 
-    deleteCandy = id => {
-        CandiesManager.removeAndList(id)
-            .then(candies => this.setState({
-                candies: candies
-            }))
+    delete = (manager, id, stateItem) => {
+        manager.delete(id)
+            .then(() => manager.getAll())
+            .then(item => {
+                if (stateItem === "stores") {
+                    this.props.history.push(`/`)
+                } else {
+                    this.props.history.push(`/${stateItem}`)
+                }
+                this.setState({
+                    [stateItem]: item
+                })
+            })
     }
 
     render() {
@@ -58,7 +66,7 @@ class ApplicationViews extends Component {
                     if (!store) {
                         store = { id: 404, name: "Store not found" }
                     }
-                    return <StoreDetail store={store} />
+                    return <StoreDetail store={store} delete={() => this.delete(StoresManager, store.id, "stores")} />
                 }} />
             </React.Fragment>
         )
