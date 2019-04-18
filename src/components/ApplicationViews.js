@@ -2,13 +2,14 @@ import React, { Component } from "react"
 import { Route } from "react-router-dom"
 import { withRouter } from "react-router"
 import StoreList from "./stores/StoreList"
-import EmployeeList from "./EmployeeList"
+import EmployeeList from "./employee/EmployeeList"
 import CandyList from "./candy/CandyList"
 import StoresManager from "../modules/StoresManager"
 import EmployeesManager from "../modules/EmployeesManager"
 import CandyTypesManager from "../modules/CandyTypesManager"
 import CandiesManager from "../modules/CandiesManager"
 import StoreDetail from "./stores/StoreDetail"
+import EmployeeDetail from "./employee/EmployeeDetail"
 
 class ApplicationViews extends Component {
 
@@ -68,6 +69,22 @@ class ApplicationViews extends Component {
                     }
                     return <StoreDetail store={store} delete={() => this.delete(StoresManager, store.id, "stores")} />
                 }} />
+                <Route path="/employees/:employeeId(\d+)" render={(props) => {
+                    let employee = this.state.employees.find(employee =>
+                        employee.id === parseInt(props.match.params.employeeId))
+                    if (!employee) {
+                        employee = { id: 404, name: "Employee not found" }
+                    }
+                    return <EmployeeDetail employee={employee} delete={() => this.delete(EmployeesManager, employee.id, "employees")} />
+                }} />
+                {/* <Route path="/stores/:storeId(\d+)" render={(props) => {
+                    let store = this.state.stores.find(store =>
+                        store.id === parseInt(props.match.params.storeId))
+                    if (!store) {
+                        store = { id: 404, name: "Store not found" }
+                    }
+                    return <StoreDetail store={store} delete={() => this.delete(StoresManager, store.id, "stores")} />
+                }} /> */}
             </React.Fragment>
         )
     }
