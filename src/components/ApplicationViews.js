@@ -10,6 +10,7 @@ import CandyTypesManager from "../modules/CandyTypesManager"
 import CandiesManager from "../modules/CandiesManager"
 import StoreDetail from "./stores/StoreDetail"
 import EmployeeDetail from "./employee/EmployeeDetail"
+import CandyDetail from "./candy/CandyDetail"
 
 class ApplicationViews extends Component {
 
@@ -25,11 +26,11 @@ class ApplicationViews extends Component {
 
         StoresManager.getAll()
             .then(stores => newState.stores = stores)
-            .then(EmployeesManager.getAll)
+            .then(() => EmployeesManager.getAll())
             .then(employees => newState.employees = employees)
-            .then(CandiesManager.getAll)
+            .then(() => CandiesManager.getAll())
             .then(candies => newState.candies = candies)
-            .then(CandyTypesManager.getAll)
+            .then(() => CandyTypesManager.getAll())
             .then(candyTypes => newState.candyTypes = candyTypes)
             .then(() => this.setState(newState))
     }
@@ -58,7 +59,7 @@ class ApplicationViews extends Component {
                 <Route exact path="/employees" render={(props) => {
                     return <EmployeeList employees={this.state.employees} />
                 }} />
-                <Route exact path="/candy" render={(props) => {
+                <Route exact path="/candies" render={(props) => {
                     return <CandyList deleteCandy={this.deleteCandy} candies={this.state.candies} candyTypes={this.state.candyTypes} />
                 }} />
                 <Route path="/stores/:storeId(\d+)" render={(props) => {
@@ -77,14 +78,14 @@ class ApplicationViews extends Component {
                     }
                     return <EmployeeDetail employee={employee} delete={() => this.delete(EmployeesManager, employee.id, "employees")} />
                 }} />
-                {/* <Route path="/stores/:storeId(\d+)" render={(props) => {
-                    let store = this.state.stores.find(store =>
-                        store.id === parseInt(props.match.params.storeId))
-                    if (!store) {
-                        store = { id: 404, name: "Store not found" }
+                <Route path="/candies/:candyId(\d+)" render={(props) => {
+                    let candy = this.state.candies.find(candy =>
+                        candy.id === parseInt(props.match.params.candyId))
+                    if (!candy) {
+                        candy = { id: 404, name: "Candy not found"}
                     }
-                    return <StoreDetail store={store} delete={() => this.delete(StoresManager, store.id, "stores")} />
-                }} /> */}
+                    return <CandyDetail candy={candy} candyTypes={this.state.candyTypes} delete={() => this.delete(CandiesManager, candy.id, "candies")} />
+                }} />
             </React.Fragment>
         )
     }

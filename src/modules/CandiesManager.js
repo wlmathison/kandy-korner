@@ -1,16 +1,24 @@
-const remoteURL = "http://localhost:5002"
+import APIManager from "./APIManager"
 
-export default {
-    get(id) {
-        return fetch(`${remoteURL}/candies/${id}`).then(results => results.json())
+export default Object.create(APIManager, {
+    get: {
+        value: function (id) {
+            return APIManager.get("candies", id)
+        }
     },
-    getAll() {
-        return fetch(`${remoteURL}/candies`).then(results => results.json())
+    getAll: {
+        value: function () {
+            return APIManager.getAll("candies")
+        }
     },
-    removeAndList(id) {
-        return fetch(`${remoteURL}/candies/${id}`, {
-            method: "DELETE"
-        }).then(results => results.json())
-        .then(this.getAll)
+    delete: {
+        value: function (id) {
+            return APIManager.delete("candies", id)
+        }
+    },
+    removeAndList: {
+        value: function (id) {
+            return APIManager.removeAndList("candies", id)
+        }
     }
-}
+})
