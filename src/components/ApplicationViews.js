@@ -12,6 +12,7 @@ import StoreDetail from "./stores/StoreDetail"
 import EmployeeDetail from "./employee/EmployeeDetail"
 import CandyDetail from "./candy/CandyDetail"
 import EmployeeForm from "./employee/EmployeeForm.js"
+import CandyForm from "./candy/CandyForm"
 
 class ApplicationViews extends Component {
 
@@ -51,8 +52,8 @@ class ApplicationViews extends Component {
             })
     }
 
-    addEmployee = (object) => {
-        EmployeesManager.post(object)
+    addEmployee = (employee) => {
+        EmployeesManager.post(employee)
             .then(() => EmployeesManager.getAll())
             .then(item => {
                 this.props.history.push("/employees")
@@ -60,6 +61,17 @@ class ApplicationViews extends Component {
                     "employees": item
                 })
             })
+    }
+
+    addCandy = (candy) => {
+        CandiesManager.post(candy)
+        .then(() => CandiesManager.getAll())
+        .then(item => {
+            this.props.history.push("/candies")
+            this.setState({
+                "candies": item
+            })
+        })
     }
 
     render() {
@@ -75,7 +87,10 @@ class ApplicationViews extends Component {
                     return <EmployeeForm {...props} employees={this.state.employees} addEmployee={this.addEmployee} />
                 }} />
                 <Route exact path="/candies" render={(props) => {
-                    return <CandyList deleteCandy={this.deleteCandy} candies={this.state.candies} candyTypes={this.state.candyTypes} />
+                    return <CandyList deleteCandy={this.deleteCandy} candies={this.state.candies} candyTypes={this.state.candyTypes} {...props} />
+                }} />
+                <Route path="/candies/new" render={(props) => {
+                    return <CandyForm {...props} candies={this.state.candies} candyTypes={this.state.candyTypes} addCandy={this.addCandy}/>
                 }} />
                 <Route path="/stores/:storeId(\d+)" render={(props) => {
                     let store = this.state.stores.find(store =>
