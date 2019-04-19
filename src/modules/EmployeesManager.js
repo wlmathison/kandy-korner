@@ -20,5 +20,10 @@ export default Object.create(APIManager, {
         value: function (id) {
             return APIManager.removeAndList("employees", id)
         }
+    },
+    post: {
+        value: function (object) {
+            return APIManager.post("employees", object)
+        }
     }
 })

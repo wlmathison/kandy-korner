@@ -11,6 +11,7 @@ import CandiesManager from "../modules/CandiesManager"
 import StoreDetail from "./stores/StoreDetail"
 import EmployeeDetail from "./employee/EmployeeDetail"
 import CandyDetail from "./candy/CandyDetail"
+import EmployeeForm from "./employee/EmployeeForm.js"
 
 class ApplicationViews extends Component {
 
@@ -50,14 +51,28 @@ class ApplicationViews extends Component {
             })
     }
 
+    addEmployee = (object) => {
+        EmployeesManager.post(object)
+            .then(() => EmployeesManager.getAll())
+            .then(item => {
+                this.props.history.push("/employees")
+                this.setState({
+                    "employees": item
+                })
+            })
+    }
+
     render() {
         return (
             <React.Fragment>
                 <Route exact path="/" render={(props) => {
-                    return <StoreList stores={this.state.stores} />
+                    return <StoreList stores={this.state.stores} {...props} />
                 }} />
                 <Route exact path="/employees" render={(props) => {
-                    return <EmployeeList employees={this.state.employees} />
+                    return <EmployeeList employees={this.state.employees} {...props} />
+                }} />
+                <Route path="/employees/new" render={(props) => {
+                    return <EmployeeForm {...props} employees={this.state.employees} addEmployee={this.addEmployee} />
                 }} />
                 <Route exact path="/candies" render={(props) => {
                     return <CandyList deleteCandy={this.deleteCandy} candies={this.state.candies} candyTypes={this.state.candyTypes} />
@@ -82,7 +97,7 @@ class ApplicationViews extends Component {
                     let candy = this.state.candies.find(candy =>
                         candy.id === parseInt(props.match.params.candyId))
                     if (!candy) {
-                        candy = { id: 404, name: "Candy not found"}
+                        candy = { id: 404, name: "Candy not found" }
                     }
                     return <CandyDetail candy={candy} candyTypes={this.state.candyTypes} delete={() => this.delete(CandiesManager, candy.id, "candies")} />
                 }} />
