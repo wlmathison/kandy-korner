@@ -24,7 +24,14 @@ class ApplicationViews extends Component {
         candies: []
     }
 
-    isAuthenticated = () => sessionStorage.getItem("credentials") !== null
+    isAuthenticated = () => {
+        if (sessionStorage.getItem("credentials") !== null || localStorage.getItem("credentials") !== null) {
+            return true 
+        } else {
+            return false
+        }
+        
+    }
 
     componentDidMount() {
         const newState = {}
