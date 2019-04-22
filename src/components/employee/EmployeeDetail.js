@@ -19,7 +19,7 @@ export default class EmployeeDetail extends Component {
                                 )
                             }
                         }
-                            className="card-link">Delete</button>
+                            className="card-link btn btn-danger">Delete</button>
                     </div>
                 </div>
             </section>
