@@ -14,6 +14,7 @@ import CandyDetail from "./candy/CandyDetail"
 import EmployeeForm from "./employee/EmployeeForm.js"
 import CandyForm from "./candy/CandyForm"
 import Login from "./authentication/Login"
+import EmployeeEditForm from "./employee/EmployeeEditForm"
 
 class ApplicationViews extends Component {
 
@@ -26,11 +27,10 @@ class ApplicationViews extends Component {
 
     isAuthenticated = () => {
         if (sessionStorage.getItem("credentials") !== null || localStorage.getItem("credentials") !== null) {
-            return true 
+            return true
         } else {
             return false
         }
-        
     }
 
     componentDidMount() {
@@ -69,6 +69,16 @@ class ApplicationViews extends Component {
                 this.props.history.push("/employees")
                 this.setState({
                     "employees": item
+                })
+            })
+    }
+
+    updateEmployee = (editedEmployeeObject) => {
+        return EmployeesManager.put(editedEmployeeObject)
+            .then(() => EmployeesManager.getAll())
+            .then(employees => {
+                this.setState({
+                    "employees": employees
                 })
             })
     }
@@ -123,13 +133,16 @@ class ApplicationViews extends Component {
                     }
                     return <StoreDetail store={store} delete={() => this.delete(StoresManager, store.id, "stores")} />
                 }} />
-                <Route path="/employees/:employeeId(\d+)" render={(props) => {
+                <Route exact path="/employees/:employeeId(\d+)" render={(props) => {
                     let employee = this.state.employees.find(employee =>
                         employee.id === parseInt(props.match.params.employeeId))
                     if (!employee) {
                         employee = { id: 404, name: "Employee not found" }
                     }
                     return <EmployeeDetail employee={employee} delete={() => this.delete(EmployeesManager, employee.id, "employees")} />
+                }} />
+                <Route path="/employees/:employeeId(\d+)/edit" render={(props) => {
+                    return <EmployeeEditForm {...props} employees={this.state.employees} updateEmployee={this.updateEmployee} />
                 }} />
                 <Route path="/candies/:candyId(\d+)" render={(props) => {
                     let candy = this.state.candies.find(candy =>

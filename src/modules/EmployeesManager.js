@@ -25,5 +25,10 @@ export default Object.create(APIManager, {
         value: function (object) {
             return APIManager.post("employees", object)
         }
+    },
+    put: {
+        value: function (object) {
+            return APIManager.put("employees", object)
+        }
     }
 })

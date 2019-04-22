@@ -21,7 +21,17 @@ class EmployeeList extends Component {
                     {
                         this.props.employees.map(employee =>
                             <div key={employee.id}>
-                                <Link className="nav-link" to={`/employees/${employee.id}`}>{employee.name}</Link>
+                                <div className="card">
+                                    <div className="card-title">
+                                        <Link className="nav-link" to={`/employees/${employee.id}`}>{employee.name}</Link>
+                                        <button
+                                            className="btn btn-success"
+                                            onClick={() => this.props.history.push(`employees/${employee.id}/edit`)}
+                                        >
+                                            Edit
+                                    </button>
+                                    </div>
+                                </div>
                             </div>
                         )
                     }
